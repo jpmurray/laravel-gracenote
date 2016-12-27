@@ -31,7 +31,7 @@ class Gracenote
      * Sets the time in minutes to cache the search results
      * @param  integer $cache A number of minutes
      */
-    public function cache(int $cache)
+    public function cache($cache)
     {
         $this->cache = $cache;
         return $this;
