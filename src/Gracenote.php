@@ -47,7 +47,7 @@ class Gracenote
      */
     public function searchType($type)
     {
-        if(!in_array($type, $this->possible_search_types)){
+        if (!in_array($type, $this->possible_search_types)) {
             throw UsageErrors::searchType();
         }
 
@@ -81,11 +81,11 @@ class Gracenote
      */
     public function search()
     {
-        if(is_null($this->search_terms)){
+        if (is_null($this->search_terms)) {
             throw MissingRequiredParameters::searchTerms();
         }
 
-        $results = Cache::remember("{$this->search_type}-{$this->search_terms}", $this->cache, function () {
+        $results = Cache::remember("{$this->search_type}-{$this->search_terms}", $this->cache, function() {
             return $this->searchGracenote();
         });
 
@@ -130,7 +130,7 @@ class Gracenote
 
     private function formatSearchArtist($raw_albums)
     {
-        return collect($raw_albums)->map(function ($item, $key) {
+        return collect($raw_albums)->map(function($item, $key) {
             $formatted = (object) [];
            
             if (isset($item->GN_ID)) {
@@ -158,7 +158,7 @@ class Gracenote
             }
 
             if (isset($item->TRACK)) {
-                $formatted->tracks = collect($item->TRACK)->map(function ($item, $key) {
+                $formatted->tracks = collect($item->TRACK)->map(function($item, $key) {
                     $formatted = (object) [];
                     if (isset($item->TRACK_NUM)) {
                         $formatted->track_number = $item->TRACK_NUM;
@@ -186,7 +186,7 @@ class Gracenote
 
     private function formatSearchAlbumTitle($raw_albums)
     {
-        return collect($raw_albums)->map(function ($item, $key) {
+        return collect($raw_albums)->map(function($item, $key) {
             $formatted = (object) [];
            
             if (isset($item->GN_ID)) {
@@ -214,7 +214,7 @@ class Gracenote
             }
 
             if (isset($item->TRACK)) {
-                $formatted->tracks = collect($item->TRACK)->map(function ($item, $key) {
+                $formatted->tracks = collect($item->TRACK)->map(function($item, $key) {
                     $formatted = (object) [];
                     if (isset($item->TRACK_NUM)) {
                         $formatted->track_number = $item->TRACK_NUM;
@@ -242,7 +242,7 @@ class Gracenote
 
     private function formatSearchTrackTitle($raw_albums)
     {
-        return collect($raw_albums)->map(function ($item, $key) {
+        return collect($raw_albums)->map(function($item, $key) {
             $formatted = (object) [];
 
             if (isset($item->GN_ID)) {
@@ -287,7 +287,7 @@ class Gracenote
     private function xmlPayload()
     {
         $lang = "<LANG>{strtoupper($this->lang)}</LANG>";
-        $auth= "<AUTH><CLIENT>{$this->client_id}-{$this->client_tag}</CLIENT><USER>{$this->user_id}</USER></AUTH>";
+        $auth = "<AUTH><CLIENT>{$this->client_id}-{$this->client_tag}</CLIENT><USER>{$this->user_id}</USER></AUTH>";
         $search = '<TEXT TYPE="'.strtoupper($this->search_type).'">'.$this->search_terms.'</TEXT>';
         $query = '<QUERY CMD="'.$this->query_cmd.'">'.$search.'</QUERY>';
         $payload = "<QUERIES>{$lang}{$auth}{$query}</QUERIES>";
